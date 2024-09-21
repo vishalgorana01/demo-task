@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
@@ -15,31 +15,31 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log(process.env.SERVER_BASE_ADDR)
     try {
-      const response = await fetch(`http://localhost:3001/api/auth/login`, {
+      const response = await fetch(`http://localhost:3001/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       })
       const data = await response.json()
       if (response.ok) {
-        localStorage.setItem('token', data.token)
         toast({
-          title: "Login Successful",
-          description: "Welcome back!",
+          title: "Signup Successful",
+          description: "Please log in with your new account",
         })
-        router.push('/')
+        router.push('/login')
       } else {
         toast({
           variant: "destructive",
-          title: "Login Failed",
-          description: data.message || "Invalid credentials",
+          title: "Signup Failed",
+          description: data.message || "Unable to create account",
         })
       }
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Login Error",
+        title: "Signup Error",
         description: "An unexpected error occurred",
       })
     }
@@ -55,7 +55,7 @@ export default function LoginPage() {
         <Label htmlFor="password">Password</Label>
         <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
-      <Button type="submit" className="w-full">Login</Button>
+      <Button type="submit" className="w-full">Sign Up</Button>
     </form>
   )
 }
