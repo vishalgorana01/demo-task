@@ -15,9 +15,8 @@ export default function SignupPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(process.env.SERVER_BASE_ADDR)
     try {
-      const response = await fetch(`http://localhost:3001/api/auth/register`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_ADDR}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -49,11 +48,25 @@ export default function SignupPage() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input 
+          id="email" 
+          type="email" 
+          required 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)}
+          className="bg-background text-foreground"
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
-        <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <Input 
+          id="password" 
+          type="password" 
+          required 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)}
+          className="bg-background text-foreground"
+        />
       </div>
       <Button type="submit" className="w-full">Sign Up</Button>
     </form>

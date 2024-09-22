@@ -29,7 +29,7 @@ export const useAuth = () => {
           }
 
           // Verify token with the backend
-          const response = await fetch('http://localhost:6000/api/auth/verify', {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_ADDR}/api/auth/verify`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

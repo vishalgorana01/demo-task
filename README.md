@@ -35,6 +35,13 @@ Backend running on `localhost:5000`
 
 Add the `.env` file in root directory
 
+```.env
+PORT =
+MONGODB_URI = 
+NEXT_PUBLIC_SERVER_BASE_ADDR =
+JWT_SECRET =
+```
+
 
 Then, run the development server:
 
