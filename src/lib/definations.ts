@@ -11,6 +11,15 @@ export type Task = {
   dueDate?: Date;
 };
 
+export type TaskWithId = {
+  _id: string;
+  title: string;
+  description?: string;
+  status: TaskStatus;
+  priority: TaskPriority;
+  dueDate?: Date;
+};
+
 export const taskSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),

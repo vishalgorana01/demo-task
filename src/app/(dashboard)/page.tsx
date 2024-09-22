@@ -7,7 +7,6 @@ export default function Page() {
     <div>
       Dashboard Page
 
-      <Button/>
     </div>
   )
 }
