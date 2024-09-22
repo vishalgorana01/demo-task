@@ -3,7 +3,7 @@ import Task from '../models/Task';
 
 export const getTasks = async (req: Request, res: Response) => {
   try {
-    const tasks = await Task.find({ user: req.user!.id });
+    const tasks = await Task.find();
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: 'Database Error: Failed to GET all Tasks' });
@@ -19,18 +19,23 @@ export const createTask = async (req: Request, res: Response) => {
       status,
       priority,
       dueDate,
-      user: req.user!.id,
+      // user: req.user!.id,
     });
-    await task.save();
-    res.status(201).json(task);
+    const savedTask = await task.save();
+
+    res.status(201).json({
+      message: "Task Created !",
+      task: savedTask,
+    });
   } catch (error) {
     res.status(500).json({ message: 'Database Error: Failed to create Task', error });
   }
+  console.log(req.user!.id);
 };
 
 export const deleteTask = async (req: Request, res: Response) => {
   try {
-    const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user!.id });
+    const task = await Task.findOneAndDelete({ _id: req.params.id });
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
