@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { TaskTable } from '@/components/task-list/taskTable'
 import { TaskFilters } from '@/components/task-list/taskFilters'
 import { TaskCard } from '@/components/task-list/taskCard'
-import { fetchTasks, deleteTask } from './api'
+import { fetchTasks, deleteTask } from '@/lib/api'
 import { TaskWithId } from '@/lib/definations'
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"

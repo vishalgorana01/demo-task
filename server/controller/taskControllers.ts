@@ -1,14 +1,34 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 import Task from '../models/Task';
 
-export const getTasks = async (req: Request, res: Response) => {
+export const getAllTasks = async (req: Request, res: Response) => {
   try {
     const tasks = await Task.find();
-    res.json(tasks);
+    res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: 'Database Error: Failed to GET all Tasks' });
   }
 };
+
+export const getTaskById = async(req: Request, res: Response) => {
+  try {
+    const taskId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(taskId)) {
+      return res.status(400).json({ error: 'Invalid task ID' });
+    }
+
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
 
 export const createTask = async (req: Request, res: Response) => {
   try {
@@ -47,19 +67,33 @@ export const deleteTask = async (req: Request, res: Response) => {
 
 
 // To be corrected
-export const updateTasks = async (req: Request, res: Response) => {
+export const updateTask = async (req: Request, res: Response) => {
   try {
-    const { tasks } = req.body;
-    const updateOperations = tasks.map((task: any) => ({
-      updateOne: {
-        filter: { _id: task._id, user: req.user!.id },
-        update: { $set: task },
-      },
-    }));
+    const taskId = req.params.id;
+    const updates = req.body;
 
-    await Task.bulkWrite(updateOperations);
-    res.json({ message: 'Tasks updated successfully' });
+    console.log("check1",updates)
+
+    // Check if the provided ID is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(taskId)) {
+      return res.status(400).json({ error: 'Invalid task ID' });
+    }
+
+    // Find the task and update it
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: taskId },
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+    console.log("check2")
+    if (!updatedTask) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+    console.log("check4")
+    res.json({ message: 'Task updated successfully', task: updatedTask });
   } catch (error) {
-    res.status(500).json({ message: 'Database Error: Failed to update Tasks ' });
+    console.log("check3")
+    res.status(500).json({ message: 'Failed to update task', error });
   }
+
 };

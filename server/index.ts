@@ -21,7 +21,7 @@ app.use(morgan('tiny'))
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/tasks', taskRoutes);
+app.use('/api/task', taskRoutes);
 
 const PORT = process.env.SERVER_PORT || 5000;
 

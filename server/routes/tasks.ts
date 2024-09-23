@@ -1,14 +1,15 @@
 import express from 'express';
-import { getTasks, createTask, deleteTask, updateTasks } from '../controller/taskControllers';
+import { getAllTasks, getTaskById, createTask, deleteTask, updateTask } from '../controller/taskControllers';
 import { authMiddleware } from '../middleware/auth';
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
-router.get('/', getTasks);
+router.get('/', getAllTasks);
+router.get('/:id', getTaskById);
 router.post('/', createTask);
 router.delete('/:id', deleteTask);
-router.patch('/bulk', updateTasks);
+router.patch('/:id', updateTask);
 
 export default router;

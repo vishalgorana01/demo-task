@@ -1,7 +1,9 @@
+// src/app/(dashboard)/editTask/page.tsx
+
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTheme } from "next-themes"
@@ -17,13 +19,17 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { createTask } from "@/lib/api"
+import { getTask, updateTask } from "@/lib/api"
 
-export default function CreateTaskPage() {
+export default function EditTaskPage() {
   const { theme } = useTheme()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const taskId = searchParams.get("id")
 
   const form = useForm<Task>({
     resolver: zodResolver(taskSchema),
@@ -35,13 +41,33 @@ export default function CreateTaskPage() {
     },
   })
 
+  useEffect(() => {
+    if (taskId) {
+      getTask(taskId)
+        .then((task) => {
+          form.reset(task)
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          toast({
+            title: "Error",
+            description: error instanceof Error ? error.message : "Failed to fetch task",
+            variant: "destructive",
+          })
+          setIsLoading(false)
+        })
+    }
+  }, [taskId, form, toast])
+
   async function onSubmit(data: Task) {
+    if (!taskId) return
+
     setIsSubmitting(true)
     try {
-      const result = await createTask(data)
+      await updateTask(taskId, data)
       toast({
-        title: "Task created successfully",
-        description: `Task ID: ${result._id}`,
+        title: "Task updated successfully",
+        description: `Task ID: ${taskId}`,
       })
       router.push("/") // Redirect to dashboard or task list
     } catch (error) {
@@ -55,9 +81,13 @@ export default function CreateTaskPage() {
     }
   }
 
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>
+  }
+
   return (
-    <div className={`container mx-auto p-4 ${theme === "dark" ? "bg-zinc-900 text-zinc-100" : "bg-zinc-100 text-zinc-900"}`}>
-      <h1 className="text-2xl font-bold mb-4">Create New Task</h1>
+    <div className={`container mx-auto p-4 ${theme === "dark" ? "bg-zinc-900 text-zinc-300" : "bg-zinc-100 text-zinc-900"}`}>
+      <h1 className="text-2xl font-bold mb-4">Edit Task</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-md mx-auto">
           <FormField
@@ -174,7 +204,7 @@ export default function CreateTaskPage() {
             )}
           />
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : "Create Task"}
+            {isSubmitting ? "Updating..." : "Update Task"}
           </Button>
         </form>
       </Form>
