@@ -94,7 +94,7 @@ export default function TaskList() {
   if (error) return <div className="flex justify-center items-center h-screen text-red-500">{error}</div>
 
   return (
-    <div className={`flex flex-1 min-h-screen ${theme === 'dark' ? 'bg-zinc-900 text-zinc-100' : 'bg-zinc-100 text-zinc-900'}`}>
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-zinc-900 text-zinc-100' : 'bg-zinc-100 text-zinc-900'}`}>
       <div className="max-w-7xl w-[75%] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8">
           <div className="mb-8">
