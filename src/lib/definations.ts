@@ -3,7 +3,7 @@ import { z } from "zod";
 export type TaskStatus = 'To Do' | 'In Progress' | 'Completed';
 export type TaskPriority = 'Low' | 'Medium' | 'High';
 
-export type Task = {
+export interface Task {
   title: string;
   description?: string;
   status: TaskStatus;
@@ -11,13 +11,8 @@ export type Task = {
   dueDate?: Date;
 };
 
-export type TaskWithId = {
+export interface TaskWithId extends Task {
   _id: string;
-  title: string;
-  description?: string;
-  status: TaskStatus;
-  priority: TaskPriority;
-  dueDate?: Date;
 };
 
 export const taskSchema = z.object({

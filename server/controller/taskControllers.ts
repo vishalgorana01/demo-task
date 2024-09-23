@@ -43,14 +43,10 @@ export const createTask = async (req: Request, res: Response) => {
     });
     const savedTask = await task.save();
 
-    res.status(201).json({
-      message: "Task Created !",
-      task: savedTask,
-    });
+    res.status(201).json(savedTask);
   } catch (error) {
     res.status(500).json({ message: 'Database Error: Failed to create Task', error });
   }
-  console.log(req.user!.id);
 };
 
 export const deleteTask = async (req: Request, res: Response) => {
@@ -72,8 +68,6 @@ export const updateTask = async (req: Request, res: Response) => {
     const taskId = req.params.id;
     const updates = req.body;
 
-    console.log("check1",updates)
-
     // Check if the provided ID is a valid MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(taskId)) {
       return res.status(400).json({ error: 'Invalid task ID' });
@@ -85,14 +79,11 @@ export const updateTask = async (req: Request, res: Response) => {
       { $set: updates },
       { new: true, runValidators: true }
     );
-    console.log("check2")
     if (!updatedTask) {
       return res.status(404).json({ message: 'Task not found' });
     }
-    console.log("check4")
     res.json({ message: 'Task updated successfully', task: updatedTask });
   } catch (error) {
-    console.log("check3")
     res.status(500).json({ message: 'Failed to update task', error });
   }
 

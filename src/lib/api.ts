@@ -1,4 +1,4 @@
-import { TaskWithId, Task } from "@/lib/definations"
+import { TaskWithId, Task, TaskStatus } from "@/lib/definations"
 
 export async function createTask(task: Task): Promise<TaskWithId> {
   const token = localStorage.getItem("token")
@@ -43,6 +43,28 @@ export async function updateTask(taskId: string, task: Partial<Task>): Promise<T
     throw new Error(errorData.message || "Failed to update task")
   }
 
+  return response.json()
+}
+
+export async function updateTaskStatus(taskId: string, newStatus: TaskStatus): Promise<TaskWithId> {
+  const token = localStorage.getItem("token")
+  if (!token) {
+    throw new Error("No authentication token found")
+  }
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_ADDR}/api/task/${taskId}/status`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ status: newStatus }),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.message || "Failed to update task status")
+  }
   return response.json()
 }
 
