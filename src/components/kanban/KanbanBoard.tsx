@@ -2,7 +2,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { DndContext, DragOverlay, closestCorners, KeyboardSensor, PointerSensor, useSensor, useSensors, DragStartEvent, DragOverEvent, DragEndEvent } from '@dnd-kit/core';
+import { DndContext, DragOverlay, pointerWithin, KeyboardSensor, PointerSensor, useSensor, useSensors, DragStartEvent, DragOverEvent, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { KanbanColumn } from './KanbanColumn';
 import { TaskCard } from './TaskCard';
@@ -52,8 +52,11 @@ export function KanbanBoard() {
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
-    if (!over) return;
-
+    if (!over) {
+      console.log('No over target');
+      return;
+    }
+    
     const activeTask = tasks.find(task => task._id === active.id);
     const overTask = tasks.find(task => task._id === over.id);
 
@@ -71,14 +74,14 @@ export function KanbanBoard() {
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over) return;
-
-    const overElement = over.data.current?.sortable?.containerId || over.id;
-    const overColumn = (overElement as HTMLElement).dataset?.status as TaskStatus;
   
     const activeTask = tasks.find(task => task._id === active.id);
-
-    if (!activeTask || !overColumn) return;
-
+    if (!activeTask) return;
+  
+    const overColumn = over.id as TaskStatus;
+    console.log('Active Task:', activeTask);
+    console.log('Over Column:', overColumn);
+  
     if (activeTask.status !== overColumn) {
       try {
         await updateTaskStatus(activeTask._id, overColumn);
@@ -92,6 +95,7 @@ export function KanbanBoard() {
           description: `Task moved to ${overColumn}`,
         });
       } catch (error) {
+        console.error('Error updating task status:', error);
         toast({
           title: "Error",
           description: "Failed to update task status. Please try again.",
@@ -99,7 +103,7 @@ export function KanbanBoard() {
         });
       }
     }
-
+  
     setActiveId(null);
   };
 
@@ -127,7 +131,7 @@ export function KanbanBoard() {
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
+      collisionDetection={pointerWithin}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}

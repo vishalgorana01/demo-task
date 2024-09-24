@@ -1,4 +1,5 @@
 // src/components/kanban/TaskCard.tsx
+
 import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -36,11 +37,18 @@ export function TaskCard({ task, onDeleteTask, isDragging }: TaskCardProps) {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'Low': return 'bg-green-500 text-white';
-      case 'Medium': return 'bg-yellow-500 text-white';
-      case 'High': return 'bg-red-500 text-white';
+      case 'Low': return 'bg-emerald-500 text-white';
+      case 'Medium': return 'bg-amber-500 text-white';
+      case 'High': return 'bg-rose-500 text-white';
       default: return 'bg-zinc-500 text-white';
     }
+  };
+
+  const handleDelete = (event: React.MouseEvent) => {
+    console.log("Delete Event Triggered ",event)
+    event.preventDefault();
+    event.stopPropagation();
+    onDeleteTask(task._id);
   };
 
   return (
@@ -48,30 +56,27 @@ export function TaskCard({ task, onDeleteTask, isDragging }: TaskCardProps) {
       <Card
         ref={setNodeRef}
         style={style}
-        className={`bg-white dark:bg-zinc-700 ${isDragging ? 'opacity-50' : ''}`}
+        className={`bg-white dark:bg-zinc-900 ${isDragging ? 'opacity-75' : ''}`}
+        onClick={()=>setIsDialogOpen(true)}
       >
-        <CardContent className="p-4 cursor-pointer" onClick={() => setIsDialogOpen(true)}>
+        <CardContent className="p-4 cursor-pointer">
           <div className="flex justify-between items-start mb-2">
             <div className="flex items-center">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="p-1 mr-2"
-                {...attributes}
-                {...listeners}
-              >
-                <GripVertical className="h-4 w-4" />
-              </Button>
+              <div {...attributes} {...listeners}>
+                <GripVertical className="h-4 w-4 mr-2 cursor-grab text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300" />
+              </div>
               <Badge className={getPriorityColor(task.priority)}>{task.priority}</Badge>
             </div>
             <DropdownMenu>
+              
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="p-1">
+                <Button variant="ghost" size="sm" className="p-1 dropdown-menu" onClick={(e) => e.stopPropagation()}>
                   <MoreHorizontal className="h-4 w-4" />
                   <span className="sr-only">Open menu</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+
+              <DropdownMenuContent align="end" className="dropdown-menu">
                 <Link href={`/editTask?id=${task._id}`} passHref>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     <Pencil className="mr-2 h-4 w-4" />
@@ -80,12 +85,13 @@ export function TaskCard({ task, onDeleteTask, isDragging }: TaskCardProps) {
                 </Link>
                 <DropdownMenuItem onSelect={(e) => {
                   e.preventDefault();
-                  onDeleteTask(task._id);
+                  handleDelete(e as unknown as React.MouseEvent);
                 }}>
                   <Trash className="mr-2 h-4 w-4" />
                   Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
+
             </DropdownMenu>
           </div>
           <h3 className="text-lg font-semibold mt-2 text-zinc-900 dark:text-zinc-100">{task.title}</h3>
