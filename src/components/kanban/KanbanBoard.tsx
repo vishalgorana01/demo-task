@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { DndContext, DragOverlay, pointerWithin, KeyboardSensor, PointerSensor, useSensor, useSensors, DragStartEvent, DragOverEvent, DragEndEvent } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { arrayMove, sortableKeyboardCoordinates} from '@dnd-kit/sortable';
 import { KanbanColumn } from './KanbanColumn';
 import { TaskCard } from './TaskCard';
 import { TaskWithId, TaskStatus } from "@/lib/definations";
@@ -34,7 +34,7 @@ export function KanbanBoard() {
     try {
       const fetchedTasks = await fetchTasks();
       setTasks(fetchedTasks);
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Failed to fetch tasks. Please try again.",
@@ -94,8 +94,8 @@ export function KanbanBoard() {
           title: "Success",
           description: `Task moved to ${overColumn}`,
         });
-      } catch (error) {
-        console.error('Error updating task status:', error);
+      } catch {
+        console.error('Error updating task status:');
         toast({
           title: "Error",
           description: "Failed to update task status. Please try again.",
@@ -115,7 +115,7 @@ export function KanbanBoard() {
         title: "Success",
         description: "Task deleted successfully",
       });
-    } catch (error) {
+    } catch  {
       toast({
         title: "Error",
         description: "Failed to delete task. Please try again.",

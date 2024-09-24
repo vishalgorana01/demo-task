@@ -6,6 +6,7 @@ import { Check, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from 'next/link'
 import { useDebounce } from 'use-debounce'
+import { TaskPriority, TaskStatus } from '@/lib/definations'
 
 type TaskFiltersProps = {
   filter: 'all' | 'To Do' | 'In Progress' | 'Completed'
@@ -65,7 +66,7 @@ export function TaskFilters({
                   variant="ghost"
                   className="justify-start"
                   onClick={() => {
-                    setFilter(status as any)
+                    setFilter(status as TaskStatus)
                     setIsStatusOpen(false)
                   }}
                 >
@@ -94,7 +95,7 @@ export function TaskFilters({
                   variant="ghost"
                   className="justify-start"
                   onClick={() => {
-                    setPriority(p as any)
+                    setPriority(p as TaskPriority)
                     setIsPriorityOpen(false)
                   }}
                 >

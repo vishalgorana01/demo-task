@@ -36,7 +36,7 @@ export default function LoginPage() {
           description: data.message || "Invalid credentials",
         })
       }
-    } catch (error) {
+    } catch {
       toast({
         variant: "destructive",
         title: "Login Error",

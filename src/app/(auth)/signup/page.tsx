@@ -35,7 +35,7 @@ export default function SignupPage() {
           description: data.message || "Unable to create account",
         })
       }
-    } catch (error) {
+    } catch {
       toast({
         variant: "destructive",
         title: "Signup Error",

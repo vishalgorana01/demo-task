@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useTheme } from 'next-themes'
-import { useRouter } from 'next/navigation'
 import { TaskTable } from '@/components/task-list/taskTable'
 import { TaskFilters } from '@/components/task-list/taskFilters'
 import { TaskCard } from '@/components/task-list/taskCard'
@@ -20,7 +19,6 @@ export default function TaskList() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedTask, setSelectedTask] = useState<TaskWithId | null>(null)
   const { theme } = useTheme()
-  const router = useRouter()
   const { toast } = useToast()
 
   useEffect(() => {
