@@ -31,13 +31,13 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger 
                 value="login"
-                className={`${activeTab === 'login' ? 'bg-primary text-primary-foreground' : ''} transition-colors`}
+                className={`${activeTab === 'login' ? 'bg-zinc-800 text-zinc-200 dark:bg-zinc-200 dark:text-zinc-800' : ''} transition-colors`}
               >
                 Login
               </TabsTrigger>
               <TabsTrigger 
                 value="signup"
-                className={`${activeTab === 'signup' ? 'bg-primary text-primary-foreground' : ''} transition-colors`}
+                className={`${activeTab === 'signup' ? 'bg-zinc-800 text-zinc-200 dark:bg-zinc-200 dark:text-zinc-800' : ''} transition-colors`}
               >
                 Sign Up
               </TabsTrigger>

@@ -50,9 +50,9 @@ export async function updateTaskStatus(taskId: string, newStatus: TaskStatus): P
   const token = localStorage.getItem("token")
   if (!token) {
     throw new Error("No authentication token found")
-  }
+  } 
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_ADDR}/api/task/${taskId}/status`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_ADDR}/api/task/${taskId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
