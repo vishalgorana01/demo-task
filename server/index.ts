@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(morgan('tiny'))
 
 // Routes
-app.use("/", (req: Request,res: Response) => {
+app.get("/", (req: Request,res: Response) => {
   return res.status(200).json({ message: 'api deployed successfully' });
 })
 app.use('/api/auth', authRoutes);
