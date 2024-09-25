@@ -14,4 +14,3 @@ router.post('/', taskControllers_1.createTask);
 router.delete('/:id', taskControllers_1.deleteTask);
 router.patch('/:id', taskControllers_1.updateTask);
 exports.default = router;
-//# sourceMappingURL=tasks.js.map

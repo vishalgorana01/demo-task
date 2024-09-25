@@ -66,4 +66,3 @@ const verify = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.verify = verify;
-//# sourceMappingURL=authControllers.js.map

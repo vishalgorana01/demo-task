@@ -10,4 +10,3 @@ router.post('/register', authControllers_1.register);
 router.post('/login', authControllers_1.login);
 router.get('/verify', authControllers_1.verify);
 exports.default = router;
-//# sourceMappingURL=auth.js.map
