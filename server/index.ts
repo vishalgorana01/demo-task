@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
@@ -25,6 +25,9 @@ app.use(express.json());
 app.use(morgan('tiny'))
 
 // Routes
+app.use("/", (req: Request,res: Response) => {
+  return res.status(200).json({ message: 'api deployed successfully' });
+})
 app.use('/api/auth', authRoutes);
 app.use('/api/task', taskRoutes);
 
