@@ -1,1 +1,0 @@
-{"root":["../index.ts","../controller/authControllers.ts","../controller/taskControllers.ts","../db/db.ts","../middleware/auth.ts","../models/Task.ts","../models/User.ts","../routes/auth.ts","../routes/tasks.ts","../types/express.d.ts"],"version":"5.6.2"}

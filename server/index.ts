@@ -16,7 +16,7 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: ['https://kanban-dashboard-neon.vercel.app', 'http://localhost:3000'],
+  origin: "*",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
